@@ -80,6 +80,16 @@ tau31_nu_phase_avg= zeros(Nx, Nz);
 tau32_nu_phase_avg= zeros(Nx, Nz);
 tau23_nu_phase_avg= zeros(Nx, Nz);
 
+tau11_nu_J_phase_avg= zeros(Nx, Nz);
+tau22_nu_J_phase_avg= zeros(Nx, Nz);
+tau33_nu_J_phase_avg= zeros(Nx, Nz);
+tau12_nu_J_phase_avg= zeros(Nx, Nz);
+tau21_nu_J_phase_avg= zeros(Nx, Nz);
+tau13_nu_J_phase_avg= zeros(Nx, Nz);
+tau31_nu_J_phase_avg= zeros(Nx, Nz);
+tau32_nu_J_phase_avg= zeros(Nx, Nz);
+tau23_nu_J_phase_avg= zeros(Nx, Nz);
+
 
  tau13_wave_phase_avg= zeros(Nx, Nz);
  tau31_wave_phase_avg= zeros(Nx, Nz);
@@ -94,6 +104,8 @@ tau23_nu_phase_avg= zeros(Nx, Nz);
 
 
 epsilon_phase_avg = zeros(Nx, Nz);
+epsilon_J_phase_avg = zeros(Nx, Nz);
+
 epsilon_SGS_phase_avg = zeros(Nx, Nz);
 
 S11_phase_avg = zeros(Nx, Nz);
@@ -104,10 +116,10 @@ S13_phase_avg = zeros(Nx, Nz);
 S23_phase_avg = zeros(Nx, Nz);
 
 %TKE viscous transport
-upi_taup_nu_i1_TKE=zeros(Nx,Nz);
-upi_taup_SGS_i1_TKE=zeros(Nx,Nz);
-upi_taup_nu_i3_TKE=zeros(Nx,Nz);
-upi_taup_SGS_i3_TKE=zeros(Nx,Nz);
+upi_taup_nu_i1_TKE  = zeros(Nx,Nz);
+upi_taup_SGS_i1_TKE = zeros(Nx,Nz);
+upi_taup_nu_i3_TKE  = zeros(Nx,Nz);
+upi_taup_SGS_i3_TKE = zeros(Nx,Nz);
 
 u_tau11_nu_phase_avg=zeros(Nx,Nz);
 v_tau21_nu_phase_avg=zeros(Nx,Nz);
@@ -260,6 +272,16 @@ for n = n_array
    tau23_nu=zeros(Nx,Ny,Nz);
    tau32_nu=zeros(Nx,Ny,Nz);
 
+   tau11_nu_J=zeros(Nx,Ny,Nz);
+   tau22_nu_J=zeros(Nx,Ny,Nz);
+   tau33_nu_J=zeros(Nx,Ny,Nz);
+   tau12_nu_J=zeros(Nx,Ny,Nz);
+   tau21_nu_J=zeros(Nx,Ny,Nz);
+   tau13_nu_J=zeros(Nx,Ny,Nz);
+   tau31_nu_J=zeros(Nx,Ny,Nz);
+   tau23_nu_J=zeros(Nx,Ny,Nz);
+   tau32_nu_J=zeros(Nx,Ny,Nz);
+
    S11=zeros(Nx,Ny,Nz);
    S22=zeros(Nx,Ny,Nz);
    S33=zeros(Nx,Ny,Nz);
@@ -293,6 +315,17 @@ for n = n_array
    tau31_nu(:,:,:)=-2*nu./zetaz_w.*S13;
    tau23_nu(:,:,:)=-2*nu./zetaz_w.*(S12.*zetax_w+S22.*zetay_w+S23.*zetaz_w);
    tau32_nu(:,:,:)=-2*nu./zetaz_w.*S23;
+
+
+   tau11_nu_J(:,:,:)=2*nu./zetaz_w.*S11;
+   tau22_nu_J(:,:,:)=2*nu./zetaz_w.*S22;
+   tau33_nu_J(:,:,:)=2*nu./zetaz_w.*S33;
+   tau12_nu_J(:,:,:)=2*nu./zetaz_w.*S12;
+   tau21_nu_J(:,:,:)=2*nu./zetaz_w.*S12;
+   tau13_nu_J(:,:,:)=2*nu./zetaz_w.*S13;
+   tau31_nu_J(:,:,:)=2*nu./zetaz_w.*S13;
+   tau23_nu_J(:,:,:)=2*nu./zetaz_w.*S23;
+   tau32_nu_J(:,:,:)=2*nu./zetaz_w.*S23;
    
    
    % tau33_SGS(:,:,:)=-2*nu_T_sgs_w.*Sij(:,:,:,7).*zetax_w(:,:,:)./zetaz_w(:,:,:) ...
@@ -344,11 +377,16 @@ for n = n_array
    
    %Viscous & SGS dissipation term
    epsilon=zeros(Nx,Ny,Nz);
+   epsilon_J=zeros(Nx,Ny,Nz);
+
    epsilon_SGS=zeros(Nx,Ny,Nz);
   
    
    epsilon(:,:,:) = 2*nu*(S11.*S11+S22.*S22+S33.*S33+ ...
                        2*(S12.*S12+S13.*S13+S23.*S23) );
+   epsilon_J(:,:,:) = 2*nu*(S11.*S11+S22.*S22+S33.*S33+ ...
+                         2*(S12.*S12+S13.*S13+S23.*S23) )./zetaz_w;
+   
    epsilon_SGS(:,:,:) = tau11_SGS.*S11+tau22_SGS.*S22+tau33_SGS.*S33 ...
                       + tau12_SGS.*S12+tau13_SGS.*S13+tau23_SGS.*S23 ...
                       + tau21_SGS.*S12+tau31_SGS.*S13+tau32_SGS.*S23;
@@ -413,8 +451,20 @@ for n = n_array
     tau32_nu_xz= zeros(Nx, Nz);
     tau23_nu_xz= zeros(Nx, Nz);
 
+    tau11_nu_J_xz= zeros(Nx, Nz);
+    tau22_nu_J_xz= zeros(Nx, Nz);
+    tau33_nu_J_xz= zeros(Nx, Nz);
+    tau12_nu_J_xz= zeros(Nx, Nz);
+    tau21_nu_J_xz= zeros(Nx, Nz);
+    tau13_nu_J_xz= zeros(Nx, Nz);
+    tau31_nu_J_xz= zeros(Nx, Nz);
+    tau32_nu_J_xz= zeros(Nx, Nz);
+    tau23_nu_J_xz= zeros(Nx, Nz);
+
+
     %epsilon, Sij
     epsilon_xz = zeros(Nx,Nz);
+    epsilon_J_xz = zeros(Nx,Nz);
     epsilon_SGS_xz = zeros(Nx,Nz);
     
     S11_xz = zeros(Nx,Nz);
@@ -496,9 +546,21 @@ for n = n_array
    tau23_nu_xz(:,:) = squeeze(mean(tau23_nu(:,:,:),2));
    tau32_nu_xz(:,:) = squeeze(mean(tau32_nu(:,:,:),2));
 
+   tau11_nu_J_xz(:,:) = squeeze(mean(tau11_nu_J(:,:,:),2));
+   tau22_nu_J_xz(:,:) = squeeze(mean(tau22_nu_J(:,:,:),2));
+   tau33_nu_J_xz(:,:) = squeeze(mean(tau33_nu_J(:,:,:),2));
+   tau12_nu_J_xz(:,:) = squeeze(mean(tau12_nu_J(:,:,:),2));
+   tau21_nu_J_xz(:,:) = squeeze(mean(tau21_nu_J(:,:,:),2));
+   tau13_nu_J_xz(:,:) = squeeze(mean(tau13_nu_J(:,:,:),2));
+   tau31_nu_J_xz(:,:) = squeeze(mean(tau31_nu_J(:,:,:),2));
+   tau23_nu_J_xz(:,:) = squeeze(mean(tau23_nu_J(:,:,:),2));
+   tau32_nu_J_xz(:,:) = squeeze(mean(tau32_nu_J(:,:,:),2));
+
     %TKE terms
     %Viscous & SGS dissipation
     epsilon_xz(:,:) = squeeze(mean(epsilon(:,:,:),2));
+    epsilon_J_xz(:,:) = squeeze(mean(epsilon_J(:,:,:),2));
+    
     epsilon_SGS_xz(:,:) = squeeze(mean(epsilon_SGS(:,:,:),2));
     
     S11_xz(:,:) = squeeze(mean(S11(:,:,:),2));
@@ -589,12 +651,24 @@ for n = n_array
     tau32_nu_shifted= zeros(Nz,Nx);
     tau23_nu_shifted= zeros(Nz,Nx);
 
+    tau11_nu_J_shifted= zeros(Nz,Nx);
+    tau22_nu_J_shifted= zeros(Nz,Nx);
+    tau33_nu_J_shifted= zeros(Nz,Nx);
+    tau12_nu_J_shifted= zeros(Nz,Nx);
+    tau21_nu_J_shifted= zeros(Nz,Nx);
+    tau13_nu_J_shifted= zeros(Nz,Nx);
+    tau31_nu_J_shifted= zeros(Nz,Nx);
+    tau32_nu_J_shifted= zeros(Nz,Nx);
+    tau23_nu_J_shifted= zeros(Nz,Nx);
+
     uu_w_shifted = zeros(Nz, Nx);%TKE
     vv_w_shifted = zeros(Nz, Nx);%TKE
     ww_shifted = zeros(Nz, Nx);%TKE
 
     %TKE dissipation
     epsilon_shifted = zeros(Nz,Nx);
+    epsilon_J_shifted = zeros(Nz,Nx);
+    
     epsilon_SGS_shifted = zeros(Nz,Nx);
     S11_shifted = zeros(Nz,Nx);
     S22_shifted = zeros(Nz,Nx);
@@ -677,7 +751,19 @@ for n = n_array
        tau23_nu_shifted(k, :) = phase_avg_shift( tau23_nu_xz(1:Nx, k)', kx, Nx, time, c_phase);
        tau32_nu_shifted(k, :) = phase_avg_shift( tau32_nu_xz(1:Nx, k)', kx, Nx, time, c_phase);
 
+       tau11_nu_J_shifted(k, :) = phase_avg_shift( tau11_nu_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       tau22_nu_J_shifted(k, :) = phase_avg_shift( tau22_nu_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       tau33_nu_J_shifted(k, :) = phase_avg_shift( tau33_nu_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       tau12_nu_J_shifted(k, :) = phase_avg_shift( tau12_nu_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       tau21_nu_J_shifted(k, :) = phase_avg_shift( tau21_nu_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       tau13_nu_J_shifted(k, :) = phase_avg_shift( tau13_nu_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       tau31_nu_J_shifted(k, :) = phase_avg_shift( tau31_nu_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       tau23_nu_J_shifted(k, :) = phase_avg_shift( tau23_nu_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       tau32_nu_J_shifted(k, :) = phase_avg_shift( tau32_nu_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+
        epsilon_shifted(k, :) = phase_avg_shift( epsilon_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       epsilon_J_shifted(k, :) = phase_avg_shift( epsilon_J_xz(1:Nx, k)', kx, Nx, time, c_phase);
+       
        epsilon_SGS_shifted(k, :) = phase_avg_shift( epsilon_SGS_xz(1:Nx, k)', kx, Nx, time, c_phase);
        
        S11_shifted(k, :) = phase_avg_shift( S11_xz(1:Nx, k)', kx, Nx, time, c_phase);
@@ -763,8 +849,20 @@ for n = n_array
    tau23_nu_phase_avg(1:Nx,:) = tau23_nu_phase_avg(1:Nx,:) + (1 / Nt) * tau23_nu_shifted';
    tau32_nu_phase_avg(1:Nx,:) = tau32_nu_phase_avg(1:Nx,:) + (1 / Nt) * tau32_nu_shifted';
 
+   tau11_nu_J_phase_avg(1:Nx,:) = tau11_nu_J_phase_avg(1:Nx,:) + (1 / Nt) * tau11_nu_J_shifted';
+   tau22_nu_J_phase_avg(1:Nx,:) = tau22_nu_J_phase_avg(1:Nx,:) + (1 / Nt) * tau22_nu_J_shifted';
+   tau33_nu_J_phase_avg(1:Nx,:) = tau33_nu_J_phase_avg(1:Nx,:) + (1 / Nt) * tau33_nu_J_shifted';
+   tau12_nu_J_phase_avg(1:Nx,:) = tau12_nu_J_phase_avg(1:Nx,:) + (1 / Nt) * tau12_nu_J_shifted';
+   tau21_nu_J_phase_avg(1:Nx,:) = tau21_nu_J_phase_avg(1:Nx,:) + (1 / Nt) * tau21_nu_J_shifted';
+   tau13_nu_J_phase_avg(1:Nx,:) = tau13_nu_J_phase_avg(1:Nx,:) + (1 / Nt) * tau13_nu_J_shifted';
+   tau31_nu_J_phase_avg(1:Nx,:) = tau31_nu_J_phase_avg(1:Nx,:) + (1 / Nt) * tau31_nu_J_shifted';
+   tau23_nu_J_phase_avg(1:Nx,:) = tau23_nu_J_phase_avg(1:Nx,:) + (1 / Nt) * tau23_nu_J_shifted';
+   tau32_nu_J_phase_avg(1:Nx,:) = tau32_nu_J_phase_avg(1:Nx,:) + (1 / Nt) * tau32_nu_J_shifted';
+
    %TKE dissipation
    epsilon_phase_avg(1:Nx,:) = epsilon_phase_avg(1:Nx,:) + (1 / Nt) * epsilon_shifted';
+   epsilon_J_phase_avg(1:Nx,:) = epsilon_J_phase_avg(1:Nx,:) + (1 / Nt) * epsilon_J_shifted';
+   
    epsilon_SGS_phase_avg(1:Nx,:) = epsilon_SGS_phase_avg(1:Nx,:) + (1 / Nt) * epsilon_SGS_shifted';
    
    S11_phase_avg(1:Nx,:) = S11_phase_avg(1:Nx,:) + (1 / Nt) * S11_shifted';
@@ -859,6 +957,15 @@ epsilon_phase_avg = epsilon_phase_avg - 2*nu*(S11_phase_avg.*S11_phase_avg + ...
                                             2*S12_phase_avg.*S12_phase_avg + ...
                                             2*S13_phase_avg.*S13_phase_avg + ...
                                             2*S23_phase_avg.*S23_phase_avg);
+
+epsilon_J_phase_avg = epsilon_J_phase_avg - (tau11_nu_J_phase_avg.*S11_phase_avg + ...
+                                             tau22_nu_J_phase_avg.*S22_phase_avg + ...
+                                             tau33_nu_J_phase_avg.*S33_phase_avg + ...
+                                           2*tau12_nu_J_phase_avg.*S12_phase_avg + ...
+                                           2*tau13_nu_J_phase_avg.*S13_phase_avg + ...
+                                           2*tau23_nu_J_phase_avg.*S23_phase_avg);
+
+
 epsilon_SGS_phase_avg = epsilon_SGS_phase_avg - ( tau11_SGS_phase_avg.*S11_phase_avg ...
                                                  +tau22_SGS_phase_avg.*S22_phase_avg ...
                                                  +tau33_SGS_phase_avg.*S33_phase_avg ...
@@ -891,15 +998,17 @@ upi_taup_SGS_i3_TKE = u_tau13_SGS_phase_avg - u_w_phase_avg.*tau13_SGS_phase_avg
                       v_tau23_SGS_phase_avg - v_w_phase_avg.*tau23_SGS_phase_avg + ...
                       w_tau33_SGS_phase_avg -   w_phase_avg.*tau33_SGS_phase_avg;
 %Convective transport
-uiuiU_TKE = uiuiU_phase_avg - (uu_w_phase_avg+vv_w_phase_avg+ww_phase_avg).*U_phase_avg ...
-            -2*u_phase_avg.*(uU_phase_avg-u_phase_avg.*U_phase_avg) ...
-            -2*v_phase_avg.*(vU_phase_avg-v_phase_avg.*U_phase_avg) ...
-            -2*w_phase_avg.*(wU_phase_avg-w_phase_avg.*U_phase_avg);
+uiuiU_TKE = 0.5*(uiuiU_phase_avg ...
+            -(uu_w_phase_avg+vv_w_phase_avg+ww_phase_avg).*U_phase_avg ...
+            -2*u_w_phase_avg.*(uU_phase_avg-u_w_phase_avg.*U_phase_avg) ...
+            -2*v_w_phase_avg.*(vU_phase_avg-v_w_phase_avg.*U_phase_avg) ...
+            -  2*w_phase_avg.*(wU_phase_avg-  w_phase_avg.*U_phase_avg));
             
-uiuiW_TKE = uiuiW_phase_avg - (uu_w_phase_avg+vv_w_phase_avg+ww_phase_avg).*W_phase_avg ...
-            -2*u_phase_avg.*(uW_phase_avg-u_phase_avg.*W_phase_avg) ...
-            -2*v_phase_avg.*(vW_phase_avg-v_phase_avg.*W_phase_avg) ...
-            -2*w_phase_avg.*(wW_phase_avg-w_phase_avg.*W_phase_avg);
+uiuiW_TKE = 0.5*(uiuiW_phase_avg ...
+            -(uu_w_phase_avg+vv_w_phase_avg+ww_phase_avg).*W_phase_avg ...
+            -2*u_w_phase_avg.*(uW_phase_avg-u_w_phase_avg.*W_phase_avg) ...
+            -2*v_w_phase_avg.*(vW_phase_avg-v_w_phase_avg.*W_phase_avg) ...
+            -  2*w_phase_avg.*(wW_phase_avg-  w_phase_avg.*W_phase_avg));
 
 save('phase_averaged_data_all_02_c2.mat','zw','zz', ...
      'u_phase_avg', ...
@@ -966,8 +1075,25 @@ save('phase_averaged_data_all_02_c2.mat','zw','zz', ...
 save('TKE_budget_terms_02_c2.mat','zw','zz', ...
              'TKE', ...
              'epsilon_phase_avg', ... %viscous dissipation
+             'epsilon_J_phase_avg', ... %viscous dissipation-J             
              'epsilon_SGS_phase_avg', ...%SGS dissipation
              'uiuiW_TKE','uiuiU_TKE', ...%Convective transport
              'upi_taup_SGS_i1_TKE','upi_taup_SGS_i3_TKE', ...%SGS transport
              'upi_taup_nu_i3_TKE','upi_taup_nu_i1_TKE', ...%Viscous transport
              'pp_Up_TKE','pp_Wp_TKE'); %pressure transport 
+
+
+%02_c2-15980000000
+%03_c7-13740000000
+%04_c15-13720000000
+%05_c25-17520000000
+%06_c0-17560000000
+%07_c-2-16200000000
+%08_c-7-13360000000
+%09_c-15-13800000000
+%10_c-25-15400000000
+
+% 
+% n_end=[15980000000,13740000000,13720000000, ...
+%        17520000000,17560000000,16200000000, ...
+%        13360000000,13800000000,15400000000];
